@@ -10,93 +10,92 @@
 #include "scene.h"
 #include "straightdoubleedge.h"
 
-namespace zodiac {
-
-EdgeGroupPair::EdgeGroupPair(Scene* scene, Node* nodeA, Node* nodeB)
-    : EdgeGroupInterface()
-    , m_scene(scene)
-    , m_firstGroup(new EdgeGroup(scene, nodeA, nodeB, this))
-    , m_secondGroup(new EdgeGroup(scene, nodeB, nodeA, this))
-    , m_edge(new StraightDoubleEdge(m_scene, this, nodeA, nodeB))
+namespace zodiac
 {
-    // upon creation, the PlugEdge creating the first EdgeGroup is still bent and visible.
-    m_edge->setVisible(false);
-}
 
-EdgeGroupPair::~EdgeGroupPair()
-{
-    // delete the groups
-    delete m_firstGroup;
-    delete m_secondGroup;
+	EdgeGroupPair::EdgeGroupPair(Scene *scene, Node *nodeA, Node *nodeB)
+			: EdgeGroupInterface(), m_scene(scene), m_firstGroup(new EdgeGroup(scene, nodeA, nodeB, this)),
+			  m_secondGroup(new EdgeGroup(scene, nodeB, nodeA, this)), m_edge(new StraightDoubleEdge(m_scene, this, nodeA, nodeB))
+	{
+		// upon creation, the PlugEdge creating the first EdgeGroup is still bent and visible.
+		m_edge->setVisible(false);
+	}
 
-    m_firstGroup=nullptr;
-    m_secondGroup=nullptr;
+	EdgeGroupPair::~EdgeGroupPair()
+	{
+		// delete the groups
+		delete m_firstGroup;
+		delete m_secondGroup;
 
-    // As EdgeGroupPairs are always deleted before the rest of the QGraphicsView, this also work on shutdown
+		m_firstGroup = nullptr;
+		m_secondGroup = nullptr;
 
-    // delete the double edge
-    m_edge->getFromNode()->removeStraightEdge(m_edge);
-    m_edge->getToNode()->removeStraightEdge(m_edge);
+		// As EdgeGroupPairs are always deleted before the rest of the QGraphicsView, this also work on shutdown
 
-    m_scene->removeItem(m_edge);
-    delete m_edge; // valgrind seems to mind a call to deleteLater() here... I've read it's not real but this works also
-    m_edge=nullptr;
-}
+		// delete the double edge
+		m_edge->getFromNode()->removeStraightEdge(m_edge);
+		m_edge->getToNode()->removeStraightEdge(m_edge);
 
-bool EdgeGroupPair::isEmpty() const
-{
-    return((m_firstGroup->getEdgeCount()==0) && (m_secondGroup->getEdgeCount()==0));
-}
+		m_scene->removeItem(m_edge);
+		delete m_edge; // valgrind seems to mind a call to deleteLater() here... I've read it's not real but this works also
+		m_edge = nullptr;
+	}
 
-void EdgeGroupPair::updateDoubleEdgeVisibility()
-{
-    // return early, if any of the two group edges is not visible
-    if(!m_firstGroup->isVisible() || !m_secondGroup->isVisible()){
-        return;
-    }
+	bool EdgeGroupPair::isEmpty() const
+	{
+		return ((m_firstGroup->getEdgeCount() == 0) && (m_secondGroup->getEdgeCount() == 0));
+	}
 
-    // if both are visible, hide them and show the double edge in their place
-    m_firstGroup->setVisibility(false);
-    m_secondGroup->setVisibility(false);
-    m_edge->setVisible(true);
-}
+	void EdgeGroupPair::updateDoubleEdgeVisibility()
+	{
+		// return early, if any of the two group edges is not visible
+		if (!m_firstGroup->isVisible() || !m_secondGroup->isVisible())
+		{
+			return;
+		}
 
-void EdgeGroupPair::hideDoubleEdge()
-{
-    // hide the double edge
-    m_edge->setVisible(false);
+		// if both are visible, hide them and show the double edge in their place
+		m_firstGroup->setVisibility(false);
+		m_secondGroup->setVisibility(false);
+		m_edge->setVisible(true);
+	}
 
-    // let the edge groups determine by themselves if they need to become visible or not
-    m_firstGroup->updateVisibility();
-    m_secondGroup->updateVisibility();
-}
+	void EdgeGroupPair::hideDoubleEdge()
+	{
+		// hide the double edge
+		m_edge->setVisible(false);
 
-void EdgeGroupPair::updateLabel()
-{
-    m_edge->updateLabel();
-}
+		// let the edge groups determine by themselves if they need to become visible or not
+		m_firstGroup->updateVisibility();
+		m_secondGroup->updateVisibility();
+	}
 
-QString EdgeGroupPair::getLabelText()
-{
-    LabelTextFactory firstLabelGroup(m_firstGroup->getEdges());
-    LabelTextFactory secondLabelGroup(m_secondGroup->getEdges());
-    int maxNameLength = qMax(firstLabelGroup.getMaxNameLength(), secondLabelGroup.getMaxNameLength());
-    int labelCount = firstLabelGroup.getLabelCount() + secondLabelGroup.getLabelCount() + 1;
+	void EdgeGroupPair::updateLabel()
+	{
+		m_edge->updateLabel();
+	}
 
-    QStringList labelStrings;
-    labelStrings.reserve(labelCount);
-    labelStrings << firstLabelGroup.produceLabel(maxNameLength);
-    labelStrings << LabelTextFactory::getHorizontalLine(maxNameLength);
-    labelStrings << secondLabelGroup.produceLabel(maxNameLength);
-    return labelStrings.join(LabelTextFactory::getNewlineChar());
+	QString EdgeGroupPair::getLabelText()
+	{
+		LabelTextFactory firstLabelGroup(m_firstGroup->getEdges());
+		LabelTextFactory secondLabelGroup(m_secondGroup->getEdges());
+		int maxNameLength = qMax(firstLabelGroup.getMaxNameLength(), secondLabelGroup.getMaxNameLength());
+		int labelCount = firstLabelGroup.getLabelCount() + secondLabelGroup.getLabelCount() + 1;
 
-}
+		QStringList labelStrings;
+		labelStrings.reserve(labelCount);
+		labelStrings << firstLabelGroup.produceLabel(maxNameLength);
+		labelStrings << LabelTextFactory::getHorizontalLine(maxNameLength);
+		labelStrings << secondLabelGroup.produceLabel(maxNameLength);
+		return labelStrings.join(LabelTextFactory::getNewlineChar());
 
-void EdgeGroupPair::updateStyle()
-{
-    m_edge->updateStyle();
-    m_firstGroup->updateStyle();
-    m_secondGroup->updateStyle();
-}
+	}
+
+	void EdgeGroupPair::updateStyle()
+	{
+		m_edge->updateStyle();
+		m_firstGroup->updateStyle();
+		m_secondGroup->updateStyle();
+	}
 
 } // namespace zodiac

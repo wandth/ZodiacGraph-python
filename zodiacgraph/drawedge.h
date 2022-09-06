@@ -32,10 +32,12 @@
 ///
 
 #include "bezieredge.h"
+#include <QtGlobal>
 
-namespace zodiac {
+namespace zodiac
+{
 
-class Scene;
+	class Scene;
 
 ///
 /// \brief Edge used to draw a new edge.
@@ -46,57 +48,57 @@ class Scene;
 /// The end point and second control point of the DrawEdge splin eare placed at the same position (usually the mouse
 /// cursor), giving the edge a "pointy" end.
 ///
-class DrawEdge : public BezierEdge
-{
+	class Q_DECL_EXPORT DrawEdge : public BezierEdge
+	{
 
-    Q_OBJECT
+	Q_OBJECT
 
-public:
+	public:
 
-    ///
-    /// \brief Constructor.
-    ///
-    /// \param [in] scene   Scene containing this DrawEdge.
-    ///
-    explicit DrawEdge(Scene* scene);
+		///
+		/// \brief Constructor.
+		///
+		/// \param [in] scene   Scene containing this DrawEdge.
+		///
+		explicit DrawEdge(Scene *scene);
 
-    ///
-    /// \brief Reverses the display of the DrawEdge to accomodate drawing from an \ref zodiac::PlugDirection::IN
-    /// "incoming" Plug.
-    ///
-    /// \param [in] isReverse   <i>true</i> if the DrawEdge originates at an \ref zodiac::PlugDirection::IN "incoming"
-    /// Plug -- <i>false</i> otherwise.
-    ///
-    inline void setReverse(bool isReverse){m_isReverse=isReverse;}
+		///
+		/// \brief Reverses the display of the DrawEdge to accomodate drawing from an \ref zodiac::PlugDirection::IN
+		/// "incoming" Plug.
+		///
+		/// \param [in] isReverse   <i>true</i> if the DrawEdge originates at an \ref zodiac::PlugDirection::IN "incoming"
+		/// Plug -- <i>false</i> otherwise.
+		///
+		inline void setReverse(bool isReverse) { m_isReverse = isReverse; }
 
-    ///
-    /// \brief The DrawEdge is said to be <i>reversed</i>, if it originates in an \ref zodiac::PlugDirection::IN
-    /// "incoming" Plug of a Node.
-    ///
-    /// \return <i>true</i> if the DrawEdge is currently reversed -- <i>false</i> if not.
-    ///
-    inline bool isReversed() const {return m_isReverse;}
+		///
+		/// \brief The DrawEdge is said to be <i>reversed</i>, if it originates in an \ref zodiac::PlugDirection::IN
+		/// "incoming" Plug of a Node.
+		///
+		/// \return <i>true</i> if the DrawEdge is currently reversed -- <i>false</i> if not.
+		///
+		inline bool isReversed() const { return m_isReverse; }
 
-public: // methods
+	public: // methods
 
-    ///
-    /// \brief Used for creating a PlugEdge when its end is not connected to a Plug yet.
-    ///
-    /// The endPoint is usually the mouse cursor.
-    ///
-    /// \param [in] plug        Plug, from where the DrawEdge originates.
-    /// \param [in] endPoint    Manually defined position of the end point and 2nd ctrl point of this spline.
-    ///
-    void fromPlugToPoint(Plug* plug, const QPointF& endPoint);
+		///
+		/// \brief Used for creating a PlugEdge when its end is not connected to a Plug yet.
+		///
+		/// The endPoint is usually the mouse cursor.
+		///
+		/// \param [in] plug        Plug, from where the DrawEdge originates.
+		/// \param [in] endPoint    Manually defined position of the end point and 2nd ctrl point of this spline.
+		///
+		void fromPlugToPoint(Plug *plug, const QPointF &endPoint);
 
-private: // members
+	private: // members
 
-    ///
-    /// \brief <i>true</i> if this DrawEdge originates in a \ref zodiac::PlugDirection::IN "incoming" Plug.
-    ///
-    bool m_isReverse;
+		///
+		/// \brief <i>true</i> if this DrawEdge originates in a \ref zodiac::PlugDirection::IN "incoming" Plug.
+		///
+		bool m_isReverse;
 
-};
+	};
 
 } // namespace zodiac
 

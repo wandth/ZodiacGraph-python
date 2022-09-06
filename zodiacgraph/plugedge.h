@@ -32,12 +32,16 @@
 ///
 
 #include "bezieredge.h"
+#include <QtGlobal>
 
-namespace zodiac {
+namespace zodiac
+{
 
-class EdgeGroup;
-class Scene;
-class Plug;
+	class EdgeGroup;
+
+	class Scene;
+
+	class Plug;
 
 ///
 /// \brief A PlugEdge in the Zodiac Graph connecting two Plug%s of different Node%s.
@@ -45,116 +49,116 @@ class Plug;
 /// This is the main edge class in the graph.
 /// However, most of its functionality resides in its base classes BezierEdge and BaseEdge.
 ///
-class PlugEdge : public BezierEdge
-{
+	class Q_DECL_EXPORT PlugEdge : public BezierEdge
+	{
 
-    Q_OBJECT
+	Q_OBJECT
 
-public: // methods
+	public: // methods
 
-    ///
-    /// \brief Constructor.
-    ///
-    /// \param [in] scene       Scene containing this PlugEdge.
-    /// \param [in] startPlug   Plug from which this PlugEdge starts.
-    /// \param [in] endPlug     Plug into which this PlugEdge flows.
-    /// \param [in] edgeGroup   EdgeGroup that this PlugEdge belongs to.
-    ///
-    explicit PlugEdge(Scene* scene, Plug* startPlug, Plug* endPlug, EdgeGroup* edgeGroup);
+		///
+		/// \brief Constructor.
+		///
+		/// \param [in] scene       Scene containing this PlugEdge.
+		/// \param [in] startPlug   Plug from which this PlugEdge starts.
+		/// \param [in] endPlug     Plug into which this PlugEdge flows.
+		/// \param [in] edgeGroup   EdgeGroup that this PlugEdge belongs to.
+		///
+		explicit PlugEdge(Scene *scene, Plug *startPlug, Plug *endPlug, EdgeGroup *edgeGroup);
 
-    ///
-    /// \brief Is called by a plug to notify the edge of a change in its state.
-    ///
-    void plugHasChanged();
+		///
+		/// \brief Is called by a plug to notify the edge of a change in its state.
+		///
+		void plugHasChanged();
 
-    ///
-    /// \brief The start Plug of this PlugEdge is an \ref zodiac::PlugDirection::OUT "outgoing" Plug of a Node.
-    ///
-    /// \return Start Plug of this PlugEdge.
-    ///
-    inline Plug* getStartPlug() const {return m_startPlug;}
+		///
+		/// \brief The start Plug of this PlugEdge is an \ref zodiac::PlugDirection::OUT "outgoing" Plug of a Node.
+		///
+		/// \return Start Plug of this PlugEdge.
+		///
+		inline Plug *getStartPlug() const { return m_startPlug; }
 
-    ///
-    /// \brief The end Plug of this PlugEdge is an \ref zodiac::PlugDirection::IN "incoming" Plug of a Node.
-    ///
-    /// \return End plug of this PlugEdge.
-    ///
-    inline Plug* getEndPlug() const {return m_endPlug;}
+		///
+		/// \brief The end Plug of this PlugEdge is an \ref zodiac::PlugDirection::IN "incoming" Plug of a Node.
+		///
+		/// \return End plug of this PlugEdge.
+		///
+		inline Plug *getEndPlug() const { return m_endPlug; }
 
-    ///
-    /// \brief Every PlugEdge is part of an EdgeGroup managed by the Scene.
-    ///
-    /// The job of the EdgeGroup is to replace all PlugEdge%s flowing from Node <i>A</i> to Node <i>B</i>, once both
-    /// Node%s are collapsed.
-    /// At this stage, all PlugEdge%s are displayed as straight lines that completely overlay each other.
-    /// This way, only a single edge is rendered and updated in the QGraphicsScene.
-    ///
-    /// \return EdgeGroup of this PlugEdge.
-    ///
-    inline EdgeGroup* getGroup() const {return m_group;}
+		///
+		/// \brief Every PlugEdge is part of an EdgeGroup managed by the Scene.
+		///
+		/// The job of the EdgeGroup is to replace all PlugEdge%s flowing from Node <i>A</i> to Node <i>B</i>, once both
+		/// Node%s are collapsed.
+		/// At this stage, all PlugEdge%s are displayed as straight lines that completely overlay each other.
+		/// This way, only a single edge is rendered and updated in the QGraphicsScene.
+		///
+		/// \return EdgeGroup of this PlugEdge.
+		///
+		inline EdgeGroup *getGroup() const { return m_group; }
 
-    ///
-    /// \brief Updates the EdgeLabel to reflect changes in the attached Plug%s and / or Node%s.
-    ///
-    inline void updateLabelText() {setLabelText(getLabelText());}
+		///
+		/// \brief Updates the EdgeLabel to reflect changes in the attached Plug%s and / or Node%s.
+		///
+		inline void updateLabelText() { setLabelText(getLabelText()); }
 
-    ///
-    /// \brief Generates the EdgeLabel's text by using information from the start and end Node of this PlugEdge.
-    ///
-    /// \return Text used for the EdgeLabel.
-    ///
-    QString getLabelText();
+		///
+		/// \brief Generates the EdgeLabel's text by using information from the start and end Node of this PlugEdge.
+		///
+		/// \return Text used for the EdgeLabel.
+		///
+		QString getLabelText();
 
-    ///
-    /// \brief Sets the text of this edge's EdgeLabel.
-    ///
-    /// Extends the base functionality by also taking care of renaming the EdgeGroup%s.
-    ///
-    /// \param [in] text    Text to set this label to. Remove an existing EdgeLabel by passing "" (the empty string).
-    ///
-    virtual void setLabelText(const QString& text);
+		///
+		/// \brief Sets the text of this edge's EdgeLabel.
+		///
+		/// Extends the base functionality by also taking care of renaming the EdgeGroup%s.
+		///
+		/// \param [in] text    Text to set this label to. Remove an existing EdgeLabel by passing "" (the empty string).
+		///
+		virtual void setLabelText(const QString &text);
 
-protected: // methods
+	protected: // methods
 
-    ///
-    /// \brief Called, when the mouse is pressed as the cursor is on this item.
-    ///
-    /// \param [in] event   Qt event object.
-    ///
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+		///
+		/// \brief Called, when the mouse is pressed as the cursor is on this item.
+		///
+		/// \param [in] event   Qt event object.
+		///
+		void mousePressEvent(QGraphicsSceneMouseEvent *event);
 
-    ///
-    /// \brief Called when this item is double-clicked.
-    ///
-    /// The user can expand both Node%s connected through this PlugEdge by double-clicking it.
-    ///
-    /// \param [in] event   Qt event object.
-    ///
-    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
+		///
+		/// \brief Called when this item is double-clicked.
+		///
+		/// The user can expand both Node%s connected through this PlugEdge by double-clicking it.
+		///
+		/// \param [in] event   Qt event object.
+		///
+		void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
 
-private: // members
+	private: // members
 
-    ///
-    /// \brief The start Plug of this PlugEdge.
-    ///
-    Plug* m_startPlug;
+		///
+		/// \brief The start Plug of this PlugEdge.
+		///
+		Plug *m_startPlug;
 
-    ///
-    /// \brief The end Plug of this PlugEdge.
-    ///
-    Plug* m_endPlug;
+		///
+		/// \brief The end Plug of this PlugEdge.
+		///
+		Plug *m_endPlug;
 
-    ///
-    /// \brief The EdgeGroup of this PlugEdge.
-    ///
-    EdgeGroup* m_group;
+		///
+		/// \brief The EdgeGroup of this PlugEdge.
+		///
+		EdgeGroup *m_group;
 
-    ///
-    /// \brief A PlugEdge is "bent" if at least one of its Plug%s is expanded from its Node.
-    ///
-    bool m_isBent;
+		///
+		/// \brief A PlugEdge is "bent" if at least one of its Plug%s is expanded from its Node.
+		///
+		bool m_isBent;
 
-};
+	};
 
 } // namespace zodiac
 

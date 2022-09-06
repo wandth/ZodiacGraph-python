@@ -33,12 +33,16 @@
 ///
 
 #include "straightedge.h"
+#include <QtGlobal>
 
-namespace zodiac {
+namespace zodiac
+{
 
-class Node;
-class Scene;
-class EdgeGroupInterface;
+	class Node;
+
+	class Scene;
+
+	class EdgeGroupInterface;
 
 ///
 /// \brief Edge displayed between to fully collapsed Node%s if they are connected with edges going back and forth.
@@ -46,34 +50,34 @@ class EdgeGroupInterface;
 /// While a single StraightEdge replaces 1-n PlugEdge%s when the Node%s on both ends are collapsed, a
 /// StraightDoubleEdge replaces 2 StraightEdge%s that connect the same Node%s but flow in different directions.
 ///
-class StraightDoubleEdge : public StraightEdge
-{
-    Q_OBJECT
+	class Q_DECL_EXPORT StraightDoubleEdge : public StraightEdge
+	{
+	Q_OBJECT
 
-public: // methods
+	public: // methods
 
-    ///
-    /// \brief Constructor.
-    ///
-    ///  \param [in] scene      Scene containing this edge.
-    ///  \param [in] group      EdgeGroupPair containing this edge.
-    ///  \param [in] fromNode   Start Node of this edge.
-    ///  \param [in] toNode     End Node of this edge.
-    ///
-    explicit StraightDoubleEdge(Scene* scene, EdgeGroupInterface* group, Node* fromNode, Node* toNode);
+		///
+		/// \brief Constructor.
+		///
+		///  \param [in] scene      Scene containing this edge.
+		///  \param [in] group      EdgeGroupPair containing this edge.
+		///  \param [in] fromNode   Start Node of this edge.
+		///  \param [in] toNode     End Node of this edge.
+		///
+		explicit StraightDoubleEdge(Scene *scene, EdgeGroupInterface *group, Node *fromNode, Node *toNode);
 
-    ///
-    /// \brief Generates and updates the text for the EdgeLabel of this edge.
-    ///
-    void updateLabel();
+		///
+		/// \brief Generates and updates the text for the EdgeLabel of this edge.
+		///
+		void updateLabel();
 
-protected: // methods
+	protected: // methods
 
-    ///
-    /// \brief Updates the shape of the edge.
-    ///
-    virtual void updateShape() override;
-};
+		///
+		/// \brief Updates the shape of the edge.
+		///
+		virtual void updateShape() override;
+	};
 
 } // namespace zodiac
 

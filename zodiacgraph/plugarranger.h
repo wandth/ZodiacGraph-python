@@ -30,10 +30,11 @@
 ///
 /// \brief Contains the definition of the zodiac::arrangePlugs function.
 ///
-
+#include <QtGlobal>
 #include <QVector>
 
-namespace zodiac {
+namespace zodiac
+{
 
 ///
 /// \brief Calculates the cheapest path through the cost-table.
@@ -63,7 +64,7 @@ namespace zodiac {
 ///
 /// \return Vector of column indices, ordered by row.
 ///
-QVector<int> arrangePlugs(const QVector<qreal>& costTable, const int rowCount, const int columnCount);
+	Q_DECL_EXPORT QVector<int> arrangePlugs(const QVector<qreal> &costTable, const int rowCount, const int columnCount);
 
 } // namespace zodiac
 

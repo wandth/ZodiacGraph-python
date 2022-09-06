@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-
+#include <iostream>
 #include <QApplication>
 
 ///
@@ -12,16 +12,14 @@
 ///
 int main(int argc, char *argv[])
 {
-    // create application
-    QApplication app(argc, argv);
-    app.setOrganizationName("clemens-sielaff");
-    app.setOrganizationDomain("www.clemens-sielaff.com");
-    app.setApplicationName("ZodiacGraph_ExampleApp");
+	// create application
+	QApplication app(argc, argv);
+	app.setOrganizationName("clemens-sielaff");
+	app.setOrganizationDomain("www.clemens-sielaff.com");
+	app.setApplicationName("ZodiacGraph_ExampleApp");
 
-    // create the main window and enter the main execution loop
-    MainWindow window;
-    window.show();
-    int result = app.exec();
-
-    return result;
+	// create the main window and enter the main execution loop
+	MainWindow window;
+	window.show();
+	return app.exec();
 }

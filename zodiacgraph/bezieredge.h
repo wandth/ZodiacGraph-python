@@ -32,11 +32,14 @@
 ///
 
 #include "baseedge.h"
+#include <QtGlobal>
 
-namespace zodiac {
+namespace zodiac
+{
 
-class Plug;
-class Scene;
+	class Plug;
+
+	class Scene;
 
 ///
 /// \brief The base class for round edges in the graph: PlugEdge and DrawEdge.
@@ -70,115 +73,115 @@ class Scene;
 /// Although the class is non-virtual, it is not intended to be instantiated as-is.
 /// Therefore its constructor is protected, so only derived classes can use it.
 ///
-class BezierEdge : public BaseEdge
-{
+	class Q_DECL_EXPORT BezierEdge : public BaseEdge
+	{
 
-    Q_OBJECT
+	Q_OBJECT
 
-public: // methods
+	public: // methods
 
-    ///
-    /// \brief Moves the EdgeArrow along the BezierEdge to a given fraction of the edge's arclength.
-    ///
-    /// \param [in] fraction    Fraction [0 -> 1] of the edges arclength at which to place the arrow.
-    ///
-    void placeArrowAt(qreal fraction) override;
+		///
+		/// \brief Moves the EdgeArrow along the BezierEdge to a given fraction of the edge's arclength.
+		///
+		/// \param [in] fraction    Fraction [0 -> 1] of the edges arclength at which to place the arrow.
+		///
+		void placeArrowAt(qreal fraction) override;
 
-public: // static methods
+	public: // static methods
 
-    ///
-    /// \brief The maximal ctrl distance is the distance between one of the end points of a BezierEdge and its nearest
-    /// control point.
-    ///
-    /// \return  Maximal distance from the ctrl point to the Plug in pixels.
-    ///
-    static inline qreal getMaxCtrlDistance() {return s_maxCtrlDistance;}
+		///
+		/// \brief The maximal ctrl distance is the distance between one of the end points of a BezierEdge and its nearest
+		/// control point.
+		///
+		/// \return  Maximal distance from the ctrl point to the Plug in pixels.
+		///
+		static inline qreal getMaxCtrlDistance() { return s_maxCtrlDistance; }
 
-    ///
-    /// \brief Sets a new maximal distance from the ctrl point to the plug in pixels.
-    ///
-    /// \param [in] distance    New maximal ctrl point distance to the plug, at least 0.
-    ///
-    static inline void setMaxCtrlDistance(qreal distance) {s_maxCtrlDistance=qMax(0.,distance);}
+		///
+		/// \brief Sets a new maximal distance from the ctrl point to the plug in pixels.
+		///
+		/// \param [in] distance    New maximal ctrl point distance to the plug, at least 0.
+		///
+		static inline void setMaxCtrlDistance(qreal distance) { s_maxCtrlDistance = qMax(0., distance); }
 
-    ///
-    /// \brief The ratio between the BezierEdge's arclength and the expansion of its control points.
-    ///
-    /// \return  Control point expansion factor.
-    ///
-    static inline qreal getCtrlExpansionFactor() {return s_ctrlExpansionFactor;}
+		///
+		/// \brief The ratio between the BezierEdge's arclength and the expansion of its control points.
+		///
+		/// \return  Control point expansion factor.
+		///
+		static inline qreal getCtrlExpansionFactor() { return s_ctrlExpansionFactor; }
 
-    ///
-    /// \brief Sets a new ratio between the BezierEdge's arclength and the expansion of its control points.
-    ///
-    /// \param [in] factor  New control point expansion factor.
-    ///
-    static inline void setCtrlExpansionFactor(qreal factor) {s_ctrlExpansionFactor=factor;}
+		///
+		/// \brief Sets a new ratio between the BezierEdge's arclength and the expansion of its control points.
+		///
+		/// \param [in] factor  New control point expansion factor.
+		///
+		static inline void setCtrlExpansionFactor(qreal factor) { s_ctrlExpansionFactor = factor; }
 
-protected: // methods
+	protected: // methods
 
-    ///
-    /// \brief Constructor.
-    ///
-    /// Protected, so a BezierEdge cannot be instantiated, as it does not have any meaningful functionality by itself.
-    ///
-    /// \param [in] scene   Scene containing this edge.
-    ///
-    explicit BezierEdge(Scene *scene);
+		///
+		/// \brief Constructor.
+		///
+		/// Protected, so a BezierEdge cannot be instantiated, as it does not have any meaningful functionality by itself.
+		///
+		/// \param [in] scene   Scene containing this edge.
+		///
+		explicit BezierEdge(Scene *scene);
 
-    ///
-    /// \brief Updates the shape of this edge.
-    ///
-    virtual void updateShape() override;
+		///
+		/// \brief Updates the shape of this edge.
+		///
+		virtual void updateShape() override;
 
-    ///
-    /// \brief Returns the position of the control point of the edge for a given Plug.
-    ///
-    /// This works regardless if it is the start or the end Plug of this edge.
-    /// Calling this function requires the start and end point of the edge to be set correctly to calculate the spline's
-    /// arclength.
-    ///
-    /// \param [in] plug    Plug to calculate the control point position for.
-    ///
-    /// \return             %Scene coordinates of the control point.
-    ///
-    QPointF getCtrlPointFor(Plug* plug);
+		///
+		/// \brief Returns the position of the control point of the edge for a given Plug.
+		///
+		/// This works regardless if it is the start or the end Plug of this edge.
+		/// Calling this function requires the start and end point of the edge to be set correctly to calculate the spline's
+		/// arclength.
+		///
+		/// \param [in] plug    Plug to calculate the control point position for.
+		///
+		/// \return             %Scene coordinates of the control point.
+		///
+		QPointF getCtrlPointFor(Plug *plug);
 
-protected: // members
+	protected: // members
 
-    ///
-    /// \brief Start point of the BezierEdge in scene coordinates.
-    ///
-    QPointF m_startPoint;
+		///
+		/// \brief Start point of the BezierEdge in scene coordinates.
+		///
+		QPointF m_startPoint;
 
-    ///
-    /// \brief First control point of the BezierEdge in scene coordinates.
-    ///
-    QPointF m_ctrlPoint1;
+		///
+		/// \brief First control point of the BezierEdge in scene coordinates.
+		///
+		QPointF m_ctrlPoint1;
 
-    ///
-    /// \brief Second control point of the BezierEdge in scene coordinates.
-    ///
-    QPointF m_ctrlPoint2;
+		///
+		/// \brief Second control point of the BezierEdge in scene coordinates.
+		///
+		QPointF m_ctrlPoint2;
 
-    ///
-    /// \brief End point of the BezierEdge in scene coordinates.
-    ///
-    QPointF m_endPoint;
+		///
+		/// \brief End point of the BezierEdge in scene coordinates.
+		///
+		QPointF m_endPoint;
 
-private: // static members
+	private: // static members
 
-    ///
-    /// \brief Maximal distance of a control point from its respective end point.
-    ///
-    static qreal s_maxCtrlDistance;
+		///
+		/// \brief Maximal distance of a control point from its respective end point.
+		///
+		static qreal s_maxCtrlDistance;
 
-    ///
-    /// \brief Factor by which the control point of is moved outward along the normal of its Plug, based on the edge's
-    /// arclengh.
-    ///
-    static qreal s_ctrlExpansionFactor;
-};
+		///
+		/// \brief Factor by which the control point of is moved outward along the normal of its Plug, based on the edge's
+		/// arclengh.
+		///
+		static qreal s_ctrlExpansionFactor;
+	};
 
 } // namespace zodiac
 

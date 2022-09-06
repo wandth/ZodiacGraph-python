@@ -29,7 +29,7 @@
 #include <QScrollArea>
 #include <QHash>
 
-#include "zodiacgraph/nodehandle.h"
+#include "ZodiacGraph/nodehandle.h"
 
 class Collapsible;
 class MainCtrl;

@@ -34,13 +34,16 @@
 #include <QObject>
 #include <QHash>
 #include <QUuid>
+#include <QtGlobal>
 
 #include "nodehandle.h"
 
-namespace zodiac {
+namespace zodiac
+{
 
-class PlugHandle;
-class Scene;
+	class PlugHandle;
+
+	class Scene;
 
 ///
 /// \brief A handle object for a zodiac::Node.
@@ -66,122 +69,122 @@ class Scene;
 /// In the meantime, this approach should cover 99% of all use-cases, as long as you don't access the graph using
 /// multiple threads at once.
 ///
-class SceneHandle : public QObject
-{
+	class Q_DECL_EXPORT SceneHandle : public QObject
+	{
 
-    Q_OBJECT
+	Q_OBJECT
 
-public: // methods
+	public: // methods
 
-    ///
-    /// \brief Constructor.
-    ///
-    /// \param [in] scene   Scene to manage through this handle
-    ///
-    explicit SceneHandle(Scene* scene = nullptr);
+		///
+		/// \brief Constructor.
+		///
+		/// \param [in] scene   Scene to manage through this handle
+		///
+		explicit SceneHandle(Scene *scene = nullptr);
 
-    ///
-    /// \brief Copy constructor.
-    ///
-    /// \param [in] other   Other SceneHandle to copy.
-    ///
-    SceneHandle(const SceneHandle& other)
-        : SceneHandle(other.data()) {}
+		///
+		/// \brief Copy constructor.
+		///
+		/// \param [in] other   Other SceneHandle to copy.
+		///
+		SceneHandle(const SceneHandle &other)
+				: SceneHandle(other.data()) {}
 
-    ///
-    /// \brief Assignment operator.
-    ///
-    /// \param [in] other   Other SceneHandle to copy from.
-    ///
-    /// \return             This.
-    ///
-    SceneHandle& operator = (const SceneHandle& other);
+		///
+		/// \brief Assignment operator.
+		///
+		/// \param [in] other   Other SceneHandle to copy from.
+		///
+		/// \return             This.
+		///
+		SceneHandle &operator=(const SceneHandle &other);
 
-    ///
-    /// \brief Equality operator.
-    ///
-    /// \param [in] other   Other SceneHandle to test against.
-    ///
-    /// \return             <i>true</i> if both handles handle the same object -- <i>false</i> otherwise.
-    ///
-    bool operator == (const SceneHandle& other) const {return other.data() == data();}
+		///
+		/// \brief Equality operator.
+		///
+		/// \param [in] other   Other SceneHandle to test against.
+		///
+		/// \return             <i>true</i> if both handles handle the same object -- <i>false</i> otherwise.
+		///
+		bool operator==(const SceneHandle &other) const { return other.data() == data(); }
 
-    ///
-    /// \brief Direct pointer access.
-    ///
-    /// \return The pointer managed by this handle.
-    ///
-    inline Scene* data() const {return m_scene;}
+		///
+		/// \brief Direct pointer access.
+		///
+		/// \return The pointer managed by this handle.
+		///
+		inline Scene *data() const { return m_scene; }
 
-    ///
-    /// \brief Used for testing, whether the handle is still alive or not.
-    ///
-    /// \return <i>true</i>, if the SceneHandle is still managing an existing Scene -- <i>false</i> otherwise.
-    ///
-    inline bool isValid() const {return m_isValid;}
+		///
+		/// \brief Used for testing, whether the handle is still alive or not.
+		///
+		/// \return <i>true</i>, if the SceneHandle is still managing an existing Scene -- <i>false</i> otherwise.
+		///
+		inline bool isValid() const { return m_isValid; }
 
-    ///
-    /// \brief Creates and adds a new Node to the zodiac graph.
-    ///
-    /// \param [in] name    Display name of the new Node.
-    /// \param [in] uuid    (optional) The unique identifier of this Node.
-    ///
-    /// \return             Handle of the new Node.
-    ///
-    NodeHandle createNode(const QString& name, const QUuid& uuid = QUuid());
+		///
+		/// \brief Creates and adds a new Node to the zodiac graph.
+		///
+		/// \param [in] name    Display name of the new Node.
+		/// \param [in] uuid    (optional) The unique identifier of this Node.
+		///
+		/// \return             Handle of the new Node.
+		///
+		NodeHandle createNode(const QString &name, const QUuid &uuid = QUuid());
 
-    ///
-    /// \brief Returns all Node%s managed by the Scene.
-    ///
-    /// \return All Node%s managed by the Scene.
-    ///
-    QList<NodeHandle> getNodes() const;
+		///
+		/// \brief Returns all Node%s managed by the Scene.
+		///
+		/// \return All Node%s managed by the Scene.
+		///
+		QList<NodeHandle> getNodes() const;
 
-    ///
-    /// \brief Clears the selection of the Scene.
-    ///
-    void deselectAll() const;
+		///
+		/// \brief Clears the selection of the Scene.
+		///
+		void deselectAll() const;
 
-signals:
+	signals:
 
-    ///
-    /// \brief Emitted when the selection in the Scene has changed.
-    ///
-    /// \param [out] selection  Handles to all selected Node%s.
-    ///
-    void selectionChanged(QList<zodiac::NodeHandle> selection);
+		///
+		/// \brief Emitted when the selection in the Scene has changed.
+		///
+		/// \param [out] selection  Handles to all selected Node%s.
+		///
+		void selectionChanged(QList<zodiac::NodeHandle> selection);
 
-private: // methods
+	private: // methods
 
-    ///
-    /// \brief Connects the handle to its managed object.
-    ///
-    void connectSignals();
+		///
+		/// \brief Connects the handle to its managed object.
+		///
+		void connectSignals();
 
-private slots:
+	private slots:
 
-    ///
-    /// \brief Called, when the selection of the Scene was changed.
-    ///
-    void updateSelection();
+		///
+		/// \brief Called, when the selection of the Scene was changed.
+		///
+		void updateSelection();
 
-    ///
-    /// \brief Called, when the mangaged Scene was destroyed.
-    ///
-    void sceneWasDestroyed();
+		///
+		/// \brief Called, when the mangaged Scene was destroyed.
+		///
+		void sceneWasDestroyed();
 
-private: // member
+	private: // member
 
-    ///
-    /// \brief Managed scene.
-    ///
-    Scene* m_scene;
+		///
+		/// \brief Managed scene.
+		///
+		Scene *m_scene;
 
-    ///
-    /// \brief Validity flag.
-    ///
-    bool m_isValid;
-};
+		///
+		/// \brief Validity flag.
+		///
+		bool m_isValid;
+	};
 
 } // namespace zodiac
 
@@ -195,9 +198,9 @@ private: // member
 ///
 /// \return         Unique identifier of a SceneHandle that can be used to determine equality.
 ///
-inline uint qHash(const zodiac::SceneHandle& key)
+inline uint qHash(const zodiac::SceneHandle &key)
 {
-    return qHash(size_t(key.data()));
+	return qHash(size_t(key.data()));
 }
 
 #endif // ZODIAC_SCENEHANDLE_H

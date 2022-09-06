@@ -8,87 +8,87 @@
 #include "node.h"
 #include "view.h"
 
-namespace zodiac {
-
-StraightEdge::StraightEdge(Scene* scene, EdgeGroupInterface* group, Node* fromNode, Node* toNode)
-    : BaseEdge(scene)
-    , m_group(group)
-    , m_fromNode(fromNode)
-    , m_toNode(toNode)
-    , m_startPoint(QPointF())
-    , m_endPoint(QPointF())
+namespace zodiac
 {
-    Q_ASSERT(fromNode!=toNode);
 
-    // register with the nodes
-    fromNode->addStraightEdge(this);
-    toNode->addStraightEdge(this);
+	StraightEdge::StraightEdge(Scene *scene, EdgeGroupInterface *group, Node *fromNode, Node *toNode)
+			: BaseEdge(scene), m_group(group), m_fromNode(fromNode), m_toNode(toNode), m_startPoint(QPointF()), m_endPoint(QPointF())
+	{
+		Q_ASSERT(fromNode != toNode);
 
-    // initialize the shape of the edge
-    nodePositionHasChanged();
-}
+		// register with the nodes
+		fromNode->addStraightEdge(this);
+		toNode->addStraightEdge(this);
 
-void StraightEdge::nodePositionHasChanged()
-{
-    // return early, if the shape has not changed
-    QPointF startPoint = m_fromNode->scenePos();
-    QPointF endPoint = m_toNode->scenePos();
-    if((startPoint==m_startPoint)&&(endPoint==m_endPoint)){
-        return;
-    }
+		// initialize the shape of the edge
+		nodePositionHasChanged();
+	}
 
-    // update the edge's ctrl points
-    m_startPoint = startPoint;
-    m_endPoint = endPoint;
+	void StraightEdge::nodePositionHasChanged()
+	{
+		// return early, if the shape has not changed
+		QPointF startPoint = m_fromNode->scenePos();
+		QPointF endPoint = m_toNode->scenePos();
+		if ((startPoint == m_startPoint) && (endPoint == m_endPoint))
+		{
+			return;
+		}
 
-    updateShape();
-}
+		// update the edge's ctrl points
+		m_startPoint = startPoint;
+		m_endPoint = endPoint;
 
-void StraightEdge::updateLabel()
-{
-    setLabelText(m_group->getLabelText());
-    placeArrowAt(.5);
-}
+		updateShape();
+	}
 
-void StraightEdge::placeArrowAt(qreal fraction)
-{
-    QPointF delta = m_endPoint-m_startPoint;
-    QPointF centerPoint = m_startPoint + (delta*fraction);
-    qreal angle = qAtan2(delta.y(), delta.x());
-    m_arrow->setTransformation(centerPoint, angle);
-}
+	void StraightEdge::updateLabel()
+	{
+		setLabelText(m_group->getLabelText());
+		placeArrowAt(.5);
+	}
 
-void StraightEdge::updateShape()
-{
-    prepareGeometryChange();
+	void StraightEdge::placeArrowAt(qreal fraction)
+	{
+		QPointF delta = m_endPoint - m_startPoint;
+		QPointF centerPoint = m_startPoint + (delta * fraction);
+		qreal angle = qAtan2(delta.y(), delta.x());
+		m_arrow->setTransformation(centerPoint, angle);
+	}
 
-    // update the path
-    QPainterPath straightLine;
-    straightLine.moveTo(m_startPoint);
-    straightLine.lineTo(m_endPoint);
-    m_path.swap(straightLine);
+	void StraightEdge::updateShape()
+	{
+		prepareGeometryChange();
 
-    // update the arrow
-    placeArrowAt(.5);
-}
+		// update the path
+		QPainterPath straightLine;
+		straightLine.moveTo(m_startPoint);
+		straightLine.lineTo(m_endPoint);
+		m_path.swap(straightLine);
 
-void StraightEdge::mousePressEvent(QGraphicsSceneMouseEvent* event)
-{
-    if(event->buttons() & View::getRemovalButton()){
-        event->accept();
-        emit removalRequested();
-    } else {
-        BaseEdge::mousePressEvent(event);
-    }
-}
+		// update the arrow
+		placeArrowAt(.5);
+	}
 
-void StraightEdge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
-{
-    if(event->buttons() & View::getSelectionButton()){
-        m_fromNode->softSetExpansion(NodeExpansion::BOTH);
-        m_toNode->softSetExpansion(NodeExpansion::BOTH);
-    }
-    BaseEdge::mouseDoubleClickEvent(event);
-}
+	void StraightEdge::mousePressEvent(QGraphicsSceneMouseEvent *event)
+	{
+		if (event->buttons() & View::getRemovalButton())
+		{
+			event->accept();
+			emit removalRequested();
+		} else
+		{
+			BaseEdge::mousePressEvent(event);
+		}
+	}
+
+	void StraightEdge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+	{
+		if (event->buttons() & View::getSelectionButton())
+		{
+			m_fromNode->softSetExpansion(NodeExpansion::BOTH);
+			m_toNode->softSetExpansion(NodeExpansion::BOTH);
+		}
+		BaseEdge::mouseDoubleClickEvent(event);
+	}
 
 } // namespace zodiac

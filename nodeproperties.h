@@ -29,15 +29,19 @@
 #include <QHash>
 #include <QWidget>
 
-#include "zodiacgraph/nodehandle.h"
-#include "zodiacgraph/plughandle.h"
+#include "ZodiacGraph/nodehandle.h"
+#include "ZodiacGraph/plughandle.h"
 
 class QGridLayout;
+
 class QLineEdit;
+
 class QPushButton;
 
 class Collapsible;
+
 class NodeCtrl;
+
 class PlugRow;
 
 ///
@@ -45,103 +49,103 @@ class PlugRow;
 ///
 class NodeProperties : public QWidget
 {
-    Q_OBJECT
+Q_OBJECT
 
-    ///
-    /// \brief The PlugRow class is a logical part of the this one, but has a 1-n relationship.
-    ///
-    friend class PlugRow;
+	///
+	/// \brief The PlugRow class is a logical part of the this one, but has a 1-n relationship.
+	///
+	friend class PlugRow;
 
 public: // methods
 
-    ///
-    /// \brief Constructor.
-    ///
-    /// \param [in] node    Node whose properties to display.
-    /// \param [in] parent  Collapsible parent object.
-    ///
-    explicit NodeProperties(NodeCtrl* node, Collapsible *parent);
+	///
+	/// \brief Constructor.
+	///
+	/// \param [in] node    Node whose properties to display.
+	/// \param [in] parent  Collapsible parent object.
+	///
+	explicit NodeProperties(NodeCtrl *node, Collapsible *parent);
 
 private: // for friend
 
-    ///
-    /// \brief The controller of the node whose properties are displayed in this NodeProperties widget.
-    ///
-    /// \return Controller of the managed node.
-    ///
-    NodeCtrl* getNode() const {return m_node;}
+	///
+	/// \brief The controller of the node whose properties are displayed in this NodeProperties widget.
+	///
+	/// \return Controller of the managed node.
+	///
+	NodeCtrl *getNode() const { return m_node; }
 
-    ///
-    /// \brief The layout to be used by PlugRows to place their widgets.
-    ///
-    /// \return The layout of the widgets related to the plugs of the node.
-    ///
-    QGridLayout* getPlugLayout() const {return m_plugLayout;}
+	///
+	/// \brief The layout to be used by PlugRows to place their widgets.
+	///
+	/// \return The layout of the widgets related to the plugs of the node.
+	///
+	QGridLayout *getPlugLayout() const { return m_plugLayout; }
 
-    ///
-    /// \brief Removes a plug from the node and the PlugRow from the editor.
-    ///
-    /// \param [in] plugName    Name of the plug to remove.
-    ///
-    void removePlugRow(const QString& plugName);
+	///
+	/// \brief Removes a plug from the node and the PlugRow from the editor.
+	///
+	/// \param [in] plugName    Name of the plug to remove.
+	///
+	void removePlugRow(const QString &plugName);
 
 private slots:
 
-    ///
-    /// \brief Called by the name edit, when the name of the node was changed through user input.
-    ///
-    void renameNode();
+	///
+	/// \brief Called by the name edit, when the name of the node was changed through user input.
+	///
+	void renameNode();
 
-    ///
-    /// \brief Called by pressing the add-plug button.
-    ///
-    void createNewPlug();
+	///
+	/// \brief Called by pressing the add-plug button.
+	///
+	void createNewPlug();
 
-    ///
-    /// \brief Creates a new entry in the plug list of this property editor alongside its PlugRow.
-    ///
-    void addPlugRow(zodiac::PlugHandle plug);
+	///
+	/// \brief Creates a new entry in the plug list of this property editor alongside its PlugRow.
+	///
+	void addPlugRow(zodiac::PlugHandle plug);
 
 private: // members
 
-    ///
-    /// \brief Controller of the edited node.
-    ///
-    NodeCtrl* m_node;
+	///
+	/// \brief Controller of the edited node.
+	///
+	NodeCtrl *m_node;
 
-    ///
-    /// \brief Node name edit.
-    ///
-    QLineEdit* m_nameEdit;
+	///
+	/// \brief Node name edit.
+	///
+	QLineEdit *m_nameEdit;
 
-    ///
-    /// \brief Layout of the widgets related to the plugs of the node.
-    ///
-    QGridLayout* m_plugLayout;
+	///
+	/// \brief Layout of the widgets related to the plugs of the node.
+	///
+	QGridLayout *m_plugLayout;
 
-    ///
-    /// \brief Button to add a new Plug to the node.
-    ///
-    QPushButton* m_addPlugButton;
+	///
+	/// \brief Button to add a new Plug to the node.
+	///
+	QPushButton *m_addPlugButton;
 
-    ///
-    /// \brief All PlugRows contained in this editor.
-    ///
-    QHash<QString, PlugRow*> m_plugRows;
+	///
+	/// \brief All PlugRows contained in this editor.
+	///
+	QHash<QString, PlugRow *> m_plugRows;
 
-    ///
-    /// \brief Hitting the add-Plug button creates incoming and outgoing Plug%s alternately.
-    ///
-    /// This flag keeps track of what is next.
-    ///
-    bool m_nextPlugIsIncoming;
+	///
+	/// \brief Hitting the add-Plug button creates incoming and outgoing Plug%s alternately.
+	///
+	/// This flag keeps track of what is next.
+	///
+	bool m_nextPlugIsIncoming;
 
 private: // static members
 
-    ///
-    /// \brief Default plug name.
-    ///
-    static QString s_defaultPlugName;
+	///
+	/// \brief Default plug name.
+	///
+	static QString s_defaultPlugName;
 
 };
 
@@ -151,72 +155,72 @@ private: // static members
 ///
 class PlugRow : public QObject
 {
-    Q_OBJECT
+Q_OBJECT
 
 public: // methods
 
-    ///
-    /// \brief Constructor.
-    ///
-    /// \param [in] editor          NodeProperties that this PlugRow is part of.
-    /// \param [in] plug            Handle of the plug whose name to edit / display.
-    /// \param [in] nameEdit        Plug name edit.
-    /// \param [in] directionToggle Plug-direction toggle button.
-    /// \param [in] removalButton   Plug-removal button.
-    ///
-    PlugRow(NodeProperties *editor, zodiac::PlugHandle plug,
-            QLineEdit *nameEdit, QPushButton *directionToggle, QPushButton *removalButton);
+	///
+	/// \brief Constructor.
+	///
+	/// \param [in] editor          NodeProperties that this PlugRow is part of.
+	/// \param [in] plug            Handle of the plug whose name to edit / display.
+	/// \param [in] nameEdit        Plug name edit.
+	/// \param [in] directionToggle Plug-direction toggle button.
+	/// \param [in] removalButton   Plug-removal button.
+	///
+	PlugRow(NodeProperties *editor, zodiac::PlugHandle plug,
+	        QLineEdit *nameEdit, QPushButton *directionToggle, QPushButton *removalButton);
 
 private slots:
 
-    ///
-    /// \brief Called when the name of the plug was changed through user input.
-    ///
-    void renamePlug();
+	///
+	/// \brief Called when the name of the plug was changed through user input.
+	///
+	void renamePlug();
 
-    ///
-    /// \brief Called when the toggle-Plug-direction button is pressed.
-    ///
-    void togglePlugDirection();
+	///
+	/// \brief Called when the toggle-Plug-direction button is pressed.
+	///
+	void togglePlugDirection();
 
-    ///
-    /// \brief Called when the Plug-removal button is pressed.
-    ///
-    void removePlug();
+	///
+	/// \brief Called when the Plug-removal button is pressed.
+	///
+	void removePlug();
 
 private: // methods
 
-    ///
-    /// \brief Single access point for setting the direction icon.
-    ///
-    void updateDirectionIcon();
+	///
+	/// \brief Single access point for setting the direction icon.
+	///
+	void updateDirectionIcon();
 
 private: // members
 
-    ///
-    /// \brief Controller of the edited node.
-    ///
-    NodeProperties* m_editor;
+	///
+	/// \brief Controller of the edited node.
+	///
+	NodeProperties *m_editor;
 
-    ///
-    /// \brief Handle of the plug whose name to edit / display.
-    ///
-    zodiac::PlugHandle m_plug;
+	///
+	/// \brief Handle of the plug whose name to edit / display.
+	///
+	zodiac::PlugHandle m_plug;
 
-    ///
-    /// \brief Plug name edit.
-    ///
-    QLineEdit* m_nameEdit;
+	///
+	/// \brief Plug name edit.
+	///
+	QLineEdit *m_nameEdit;
 
-    ///
-    /// \brief Plug-direction toggle button.
-    ///
-    QPushButton* m_directionToggle;
+	///
+	/// \brief Plug-direction toggle button.
+	///
+	QPushButton *m_directionToggle;
 
-    ///
-    /// \brief Plug-removal button.
-    ///
-    QPushButton* m_removalButton;
+	///
+	/// \brief Plug-removal button.
+	///
+	QPushButton *m_removalButton;
 };
 
 #endif // NODEPROPERTIES_H

@@ -33,6 +33,7 @@
 ///
 
 #include "baseedge.h"
+#include <QtGlobal>
 
 namespace zodiac {
 
@@ -45,7 +46,7 @@ class EdgeGroupInterface;
 ///
 /// StraightEdge%s are used by EdgeGroup%s.
 ///
-class StraightEdge : public BaseEdge
+class Q_DECL_EXPORT StraightEdge : public BaseEdge
 {
     Q_OBJECT
 

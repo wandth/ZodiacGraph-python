@@ -20,6 +20,10 @@ Therefore, it should fit most use-cases that require a node graph-like GUI.
 However, to fully utilize its potential, the showcase application does contain two controller classes that connect the
 node graph UI elements to the rest of the application
 
+
+this is a pyside2 branch of ZodiacGraph
+> https://github.com/clemenssielaff/ZodiacGraph.git
+
 # Installation
 Building the code in this repository was tested on Windows and Linux (Ubuntu) with Qt 5.4.
 Other configurations should work -- please let me know if you had any errors on your system.

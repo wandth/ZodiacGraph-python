@@ -5,47 +5,48 @@
 #include "edgearrow.h"
 #include "edgegroupinterface.h"
 
-namespace zodiac {
-
-StraightDoubleEdge::StraightDoubleEdge(Scene* scene, EdgeGroupInterface* group,
-                       Node* fromNode, Node* toNode)
-    : StraightEdge(scene, group, fromNode, toNode)
+namespace zodiac
 {
-    m_arrow->setKind(ArrowKind::DOUBLE);
 
-    // initialize the shape
-    // the StraightEdge Constructor does so as well, but at that time this part of the instance is not constructed yet
-    // so the wrong function is called (it calls StraightEdge::updateShape instead).
-    updateShape();
-}
+	StraightDoubleEdge::StraightDoubleEdge(Scene *scene, EdgeGroupInterface *group,
+	                                       Node *fromNode, Node *toNode)
+			: StraightEdge(scene, group, fromNode, toNode)
+	{
+		m_arrow->setKind(ArrowKind::DOUBLE);
 
-void StraightDoubleEdge::updateLabel()
-{
-    setLabelText(m_group->getLabelText());
-    placeArrowAt(.5);
-}
+		// initialize the shape
+		// the StraightEdge Constructor does so as well, but at that time this part of the instance is not constructed yet
+		// so the wrong function is called (it calls StraightEdge::updateShape instead).
+		updateShape();
+	}
 
-void StraightDoubleEdge::updateShape()
-{
-    prepareGeometryChange();
+	void StraightDoubleEdge::updateLabel()
+	{
+		setLabelText(m_group->getLabelText());
+		placeArrowAt(.5);
+	}
 
-    // calculate the perpendicular edge offset
-    QVector2D direction = QVector2D(m_endPoint-m_startPoint);
-    direction.normalize();
-    QPointF offset = QPointF(-direction.y(), direction.x()) * s_width;
+	void StraightDoubleEdge::updateShape()
+	{
+		prepareGeometryChange();
 
-    // update the path
-    QPainterPath doubleLine;
-    doubleLine.moveTo(m_startPoint+offset);
-    doubleLine.lineTo(m_endPoint+offset);
+		// calculate the perpendicular edge offset
+		QVector2D direction = QVector2D(m_endPoint - m_startPoint);
+		direction.normalize();
+		QPointF offset = QPointF(-direction.y(), direction.x()) * s_width;
 
-    doubleLine.moveTo(m_startPoint-offset);
-    doubleLine.lineTo(m_endPoint-offset);
+		// update the path
+		QPainterPath doubleLine;
+		doubleLine.moveTo(m_startPoint + offset);
+		doubleLine.lineTo(m_endPoint + offset);
 
-    m_path.swap(doubleLine);
+		doubleLine.moveTo(m_startPoint - offset);
+		doubleLine.lineTo(m_endPoint - offset);
 
-    // update the arrow
-    placeArrowAt(.5);
-}
+		m_path.swap(doubleLine);
+
+		// update the arrow
+		placeArrowAt(.5);
+	}
 
 } // namespace zodiac

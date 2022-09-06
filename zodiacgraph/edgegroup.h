@@ -36,16 +36,22 @@
 #include <QObject>
 #include <QPair>
 #include <QSet>
+#include <QtGlobal>
 
 #include "edgegroupinterface.h"
 
-namespace zodiac {
+namespace zodiac
+{
 
-class EdgeGroupPair;
-class Node;
-class Scene;
-class PlugEdge;
-class StraightEdge;
+	class EdgeGroupPair;
+
+	class Node;
+
+	class Scene;
+
+	class PlugEdge;
+
+	class StraightEdge;
 
 ///
 /// \brief An EdgeGroup is an additional layer of management for all PlugEdge%s between two Node%s.
@@ -55,201 +61,202 @@ class StraightEdge;
 /// This would make it impossible to find a specific connection from the stack of PlugEdge%s alone.
 /// Also, drawing the edges on top of each other is a drain on perfomance without visual improvements.
 ///
-class EdgeGroup : public QObject, public EdgeGroupInterface
-{
+	class Q_DECL_EXPORT EdgeGroup : public QObject, public EdgeGroupInterface
+	{
 
-    Q_OBJECT
+	Q_OBJECT
 
-public: // methods
+	public: // methods
 
-    ///
-    /// \brief Constructor.
-    ///
-    /// \param [in] scene       Scene owning this EdgeGroup.
-    /// \param [in] fromNode    Node from which the PlugEdge%s originate.
-    /// \param [in] toNode      Target Node of the PlugEdge%s in this group.
-    /// \param [in] pair        EdgeGroupPair owning this EdgeGroup.
-    ///
-    explicit EdgeGroup(Scene* scene, Node* fromNode, Node* toNode, EdgeGroupPair* pair);
+		///
+		/// \brief Constructor.
+		///
+		/// \param [in] scene       Scene owning this EdgeGroup.
+		/// \param [in] fromNode    Node from which the PlugEdge%s originate.
+		/// \param [in] toNode      Target Node of the PlugEdge%s in this group.
+		/// \param [in] pair        EdgeGroupPair owning this EdgeGroup.
+		///
+		explicit EdgeGroup(Scene *scene, Node *fromNode, Node *toNode, EdgeGroupPair *pair);
 
-    ///
-    /// \brief Destuctor.
-    ///
-    /// Also deletes the StraightEdge of this EdgeGroup.
-    ///
-    ~EdgeGroup();
+		///
+		/// \brief Destuctor.
+		///
+		/// Also deletes the StraightEdge of this EdgeGroup.
+		///
+		~EdgeGroup();
 
-    ///
-    /// \brief Adds a new PlugEdge to this EdgeGroup.
-    ///
-    /// Make sure that the PlugEdge flows between the correct Node%s in the correct direction.
-    /// If it doesn't, this function will raise an assertion error in debug mode and do nothing in release mode.
-    ///
-    /// \param [in] edge    New PlugEdge to add.
-    ///
-    void addEdge(PlugEdge* edge);
+		///
+		/// \brief Adds a new PlugEdge to this EdgeGroup.
+		///
+		/// Make sure that the PlugEdge flows between the correct Node%s in the correct direction.
+		/// If it doesn't, this function will raise an assertion error in debug mode and do nothing in release mode.
+		///
+		/// \param [in] edge    New PlugEdge to add.
+		///
+		void addEdge(PlugEdge *edge);
 
-    ///
-    /// \brief Removes an existing PlugEdge from this EdgeGroup.
-    ///
-    /// Make sure that the PlugEdge is part of this EdgeGroup.
-    /// If it is not, this function will raise an assertion error in debug mode and do nothing in release mode.
-    ///
-    /// \param [in] edge    Existing PlugEdge to remove.
-    ///
-    void removeEdge(PlugEdge* edge);
+		///
+		/// \brief Removes an existing PlugEdge from this EdgeGroup.
+		///
+		/// Make sure that the PlugEdge is part of this EdgeGroup.
+		/// If it is not, this function will raise an assertion error in debug mode and do nothing in release mode.
+		///
+		/// \param [in] edge    Existing PlugEdge to remove.
+		///
+		void removeEdge(PlugEdge *edge);
 
-    ///
-    /// \brief Increase the number of bent curves in this group.
-    ///
-    /// A "bent" edge has one or both of its connecting Plug%s expanded from its Node, visually bending its curve.
-    /// As soon as a single edge in the EdgeGroup is bent, the StraightEdge of the EdgeGroup becomes invisible and
-    /// all PlugEdge%s are displayed instead.
-    ///
-    void increaseBentCount();
+		///
+		/// \brief Increase the number of bent curves in this group.
+		///
+		/// A "bent" edge has one or both of its connecting Plug%s expanded from its Node, visually bending its curve.
+		/// As soon as a single edge in the EdgeGroup is bent, the StraightEdge of the EdgeGroup becomes invisible and
+		/// all PlugEdge%s are displayed instead.
+		///
+		void increaseBentCount();
 
-    ///
-    /// \brief Decrease the number of bent curves in this group.
-    ///
-    /// See \ref zodiac::EdgeGroup::increaseBentCount() "increaseBentCount()" for details on bent edges.
-    ///
-    void decreaseBentCount();
+		///
+		/// \brief Decrease the number of bent curves in this group.
+		///
+		/// See \ref zodiac::EdgeGroup::increaseBentCount() "increaseBentCount()" for details on bent edges.
+		///
+		void decreaseBentCount();
 
-    ///
-    /// \brief Lets the EdgeGroup determine its own visibility, based on its bent-count.
-    ///
-    void updateVisibility();
+		///
+		/// \brief Lets the EdgeGroup determine its own visibility, based on its bent-count.
+		///
+		void updateVisibility();
 
-    ///
-    /// \brief The hash of this EdgeGroup, as calculated by \ref zodiac::EdgeGroup::getHashOf() "getHashOf()".
-    ///
-    /// \return Hash of this EdgeGroup..
-    ///
-    uint getHash() const;
+		///
+		/// \brief The hash of this EdgeGroup, as calculated by \ref zodiac::EdgeGroup::getHashOf() "getHashOf()".
+		///
+		/// \return Hash of this EdgeGroup..
+		///
+		uint getHash() const;
 
-    ///
-    /// \brief <i>true</i> if the straight edge of this group is visible -- <i>false</i> otherwise.
-    ///
-    /// \return Visibility of this EdgeGroup.
-    ///
-    bool isVisible() const;
+		///
+		/// \brief <i>true</i> if the straight edge of this group is visible -- <i>false</i> otherwise.
+		///
+		/// \return Visibility of this EdgeGroup.
+		///
+		bool isVisible() const;
 
-    ///
-    /// \brief Hides the StraightEdge of this EdgeGroup in favour of the DoubleStraightEdge of the EdgeGroupPair, even
-    /// if it would otherwise be visible.
-    ///
-    /// \param [in] visibility   <i>true</i> if the straight edge should be visible -- <i>false</i> otherwise.
-    ///
-    void setVisibility(bool visibility);
+		///
+		/// \brief Hides the StraightEdge of this EdgeGroup in favour of the DoubleStraightEdge of the EdgeGroupPair, even
+		/// if it would otherwise be visible.
+		///
+		/// \param [in] visibility   <i>true</i> if the straight edge should be visible -- <i>false</i> otherwise.
+		///
+		void setVisibility(bool visibility);
 
-    ///
-    /// \brief The number of edges in this group.
-    ///
-    /// \return Edge count.
-    ///
-    inline int getEdgeCount() const {return m_edges.size();}
+		///
+		/// \brief The number of edges in this group.
+		///
+		/// \return Edge count.
+		///
+		inline int getEdgeCount() const { return m_edges.size(); }
 
-    ///
-    /// \brief All PlugEdge%s of this EdgeGroup.
-    ///
-    /// \return All PlugEdge%s of this EdgeGroup.
-    ///
-    inline const QSet<PlugEdge*>& getEdges() const {return m_edges;}
+		///
+		/// \brief All PlugEdge%s of this EdgeGroup.
+		///
+		/// \return All PlugEdge%s of this EdgeGroup.
+		///
+		inline const QSet<PlugEdge *> &getEdges() const { return m_edges; }
 
-    ///
-    /// \brief The EdgeGroupPair owning this EdgeGroup.
-    ///
-    /// \return This EdgeGroup's EdgeGroupPair.
-    ///
-    inline EdgeGroupPair* getEdgeGroupPair() const {return m_pair;}
+		///
+		/// \brief The EdgeGroupPair owning this EdgeGroup.
+		///
+		/// \return This EdgeGroup's EdgeGroupPair.
+		///
+		inline EdgeGroupPair *getEdgeGroupPair() const { return m_pair; }
 
-    ///
-    /// \brief Generates the label text for this EdgeGroup.
-    ///
-    /// \return Label text based on the PlugEdge%s contained in this group.
-    ///
-    QString getLabelText();
+		///
+		/// \brief Generates the label text for this EdgeGroup.
+		///
+		/// \return Label text based on the PlugEdge%s contained in this group.
+		///
+		QString getLabelText();
 
-    ///
-    /// \brief Updates the label text of the EdgeGroup's StraightEdge, as well as the StraightDouleEdge label.
-    ///
-    void updateLabelText();
+		///
+		/// \brief Updates the label text of the EdgeGroup's StraightEdge, as well as the StraightDouleEdge label.
+		///
+		void updateLabelText();
 
-    ///
-    /// \brief Applies style changes in the class' static members to this instance.
-    ///
-    /// Is part of the scene-wide cascade of %updateStyle()-calls after a re-styling of the ZodiacGraph.
-    ///
-    void updateStyle();
+		///
+		/// \brief Applies style changes in the class' static members to this instance.
+		///
+		/// Is part of the scene-wide cascade of %updateStyle()-calls after a re-styling of the ZodiacGraph.
+		///
+		void updateStyle();
 
-public: // static methods
+	public: // static methods
 
-    ///
-    /// \brief Calculates a hash value based on two nodes.
-    ///
-    /// The order of nodes matters.
-    ///
-    /// \param [in] fromNode    Node from which the PlugEdge%s originate.
-    /// \param [in] toNode      Target Node of the PlugEdge%s in this group.
-    /// \param [in] seed        Seed value for the <a href="http://doc.qt.io/qt-5/qhash.html#qHash-33">qhash</a>
-    ///                         function.
-    ///
-    /// \return                 Hash value of an EdgeGroup connecting the two given Node%s from fromNode to toNode.
-    ///
-    static inline uint getHashOf(Node* fromNode, Node* toNode, uint seed=0){
-        return qHash(QPair<Node*, Node*>(fromNode, toNode), seed);
-    }
+		///
+		/// \brief Calculates a hash value based on two nodes.
+		///
+		/// The order of nodes matters.
+		///
+		/// \param [in] fromNode    Node from which the PlugEdge%s originate.
+		/// \param [in] toNode      Target Node of the PlugEdge%s in this group.
+		/// \param [in] seed        Seed value for the <a href="http://doc.qt.io/qt-5/qhash.html#qHash-33">qhash</a>
+		///                         function.
+		///
+		/// \return                 Hash value of an EdgeGroup connecting the two given Node%s from fromNode to toNode.
+		///
+		static inline uint getHashOf(Node *fromNode, Node *toNode, uint seed = 0)
+		{
+			return qHash(QPair<Node *, Node *>(fromNode, toNode), seed);
+		}
 
-private slots:
+	private slots:
 
-    ///
-    /// \brief Is called, when the StraightEdge is clicked with the removal button.
-    ///
-    /// If there is more than one PlugEdge in the group, the request is ignored.
-    /// Otherwise, the PlugEdge is removed which in turn could also remove this group if its pair is also empty.
-    ///
-    void removalRequested();
+		///
+		/// \brief Is called, when the StraightEdge is clicked with the removal button.
+		///
+		/// If there is more than one PlugEdge in the group, the request is ignored.
+		/// Otherwise, the PlugEdge is removed which in turn could also remove this group if its pair is also empty.
+		///
+		void removalRequested();
 
-private: // members
+	private: // members
 
-    ///
-    /// \brief Scene containing this EdgeGroup.
-    ///
-    Scene* m_scene;
+		///
+		/// \brief Scene containing this EdgeGroup.
+		///
+		Scene *m_scene;
 
-    ///
-    /// \brief The Node from which the PlugEdge%s of this group originate.
-    ///
-    Node* m_fromNode;
+		///
+		/// \brief The Node from which the PlugEdge%s of this group originate.
+		///
+		Node *m_fromNode;
 
-    ///
-    /// \brief The Node to which the PlugEdge%s of this group flow.
-    ///
-    Node* m_toNode;
+		///
+		/// \brief The Node to which the PlugEdge%s of this group flow.
+		///
+		Node *m_toNode;
 
-    ///
-    /// \brief EdgeGroupPair that owns this group.
-    ///
-    EdgeGroupPair* m_pair;
+		///
+		/// \brief EdgeGroupPair that owns this group.
+		///
+		EdgeGroupPair *m_pair;
 
-    ///
-    /// \brief All PlugEdge%s in this EdgeGroup.
-    ///
-    QSet<PlugEdge*> m_edges;
+		///
+		/// \brief All PlugEdge%s in this EdgeGroup.
+		///
+		QSet<PlugEdge *> m_edges;
 
-    ///
-    /// \brief StraightEdge to draw when all of the group's PlugEdge%s are hidden.
-    ///
-    /// Owned by this EdgeGroup.
-    ///
-    StraightEdge* m_straightEdge;
+		///
+		/// \brief StraightEdge to draw when all of the group's PlugEdge%s are hidden.
+		///
+		/// Owned by this EdgeGroup.
+		///
+		StraightEdge *m_straightEdge;
 
-    ///
-    /// \brief The current number of bent edges in this group.
-    ///
-    int m_bentEdgesCount;
+		///
+		/// \brief The current number of bent edges in this group.
+		///
+		int m_bentEdgesCount;
 
-};
+	};
 
 } // namespace zodiac
 

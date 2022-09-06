@@ -34,137 +34,140 @@
 
 #include <QSet>
 #include <QString>
+#include <QtGlobal>
+#include <QObject>
 
-namespace zodiac {
+namespace zodiac
+{
 
-class PlugEdge;
+	class PlugEdge;
 
 ///
 /// \brief The LabelTextFactory is a helper class for creating label texts.
 ///
 /// The challenge is to produce text that appears centered around the arrow denoting the direction of the edge flow.
 ///
-class LabelTextFactory
-{
+	class Q_DECL_EXPORT LabelTextFactory : QObject
+	{
+	Q_OBJECT
+	public: // methods
 
-public: // methods
+		///
+		/// \brief Constructor.
+		///
+		/// \param [in] edges   The PlugEdge%s used to create the label text.
+		///
+		explicit LabelTextFactory(const QSet<PlugEdge *> &edges);
 
-    ///
-    /// \brief Constructor.
-    ///
-    /// \param [in] edges   The PlugEdge%s used to create the label text.
-    ///
-    explicit LabelTextFactory(const QSet<PlugEdge*>& edges);
+		///
+		/// \brief Constructor overload.
+		///
+		/// \param [in] edge    Single edge for which to create the labe.
+		///
+		explicit LabelTextFactory(PlugEdge *edge);
 
-    ///
-    /// \brief Constructor overload.
-    ///
-    /// \param [in] edge    Single edge for which to create the labe.
-    ///
-    explicit LabelTextFactory(PlugEdge* edge);
+		///
+		/// \brief Produces the label string.
+		///
+		/// You can use the <code>maxNameLength</code> parameter to override the length of the longest name in the label.
+		/// This is useful for EdgeGroupPair%s that have two LabelTextFactory%s that have to produce a single label that is
+		/// centered around the arrow from both.
+		///
+		/// \param [in] maxNameLength   (optional) Overrides the default length of the longest name
+		///
+		/// \return                     Label string.
+		///
+		QString produceLabel(int maxNameLength = 0) const;
 
-    ///
-    /// \brief Produces the label string.
-    ///
-    /// You can use the <code>maxNameLength</code> parameter to override the length of the longest name in the label.
-    /// This is useful for EdgeGroupPair%s that have two LabelTextFactory%s that have to produce a single label that is
-    /// centered around the arrow from both.
-    ///
-    /// \param [in] maxNameLength   (optional) Overrides the default length of the longest name
-    ///
-    /// \return                     Label string.
-    ///
-    QString produceLabel(int maxNameLength = 0) const;
+		///
+		/// \brief The number of individual labels in this factory.
+		///
+		/// \return Number of labels.
+		///
+		int getLabelCount() const { return m_labelCount; }
 
-    ///
-    /// \brief The number of individual labels in this factory.
-    ///
-    /// \return Number of labels.
-    ///
-    int getLabelCount() const {return m_labelCount;}
+		///
+		/// \brief The number of characters in the longest name of all labels.
+		///
+		/// \return Maximum name length.
+		///
+		int getMaxNameLength() const { return m_maxNameLength; }
 
-    ///
-    /// \brief The number of characters in the longest name of all labels.
-    ///
-    /// \return Maximum name length.
-    ///
-    int getMaxNameLength() const {return m_maxNameLength;}
+	public: // static methods
 
-public: // static methods
+		///
+		/// \brief The newline-character used in the LabelTextFactory.
+		///
+		/// Is the default one (<code>\\n</code>), but just in case, we have a single point of access for it.
+		///
+		/// \return The newline-character.
+		///
+		static const QString &getNewlineChar() { return s_newlineChar; }
 
-    ///
-    /// \brief The newline-character used in the LabelTextFactory.
-    ///
-    /// Is the default one (<code>\\n</code>), but just in case, we have a single point of access for it.
-    ///
-    /// \return The newline-character.
-    ///
-    static const QString& getNewlineChar() {return s_newlineChar;}
+		///
+		/// \brief Produces a horizontal line that can be used to separate the output of several LabelTextFactory%s.
+		///
+		/// The maxNameLength paramter ensures that the length of the horizontal line does not exceed the rest of the label.
+		///
+		/// \param [in] maxNameLength   The length of the longest name.
+		///
+		/// \return                     Unbroken, horizontal line, vertically centered.
+		///
+		static QString getHorizontalLine(int maxNameLength);
 
-    ///
-    /// \brief Produces a horizontal line that can be used to separate the output of several LabelTextFactory%s.
-    ///
-    /// The maxNameLength paramter ensures that the length of the horizontal line does not exceed the rest of the label.
-    ///
-    /// \param [in] maxNameLength   The length of the longest name.
-    ///
-    /// \return                     Unbroken, horizontal line, vertically centered.
-    ///
-    static QString getHorizontalLine(int maxNameLength);
+	private: // members
 
-private: // members
+		///
+		/// \brief List of a pair of label names.
+		///
+		/// A <i>name</i> is one half of the label -- two <i>names</i> are connected using an arrow.
+		///
+		QList<QPair<QString, QString>> m_namePairs;
 
-    ///
-    /// \brief List of a pair of label names.
-    ///
-    /// A <i>name</i> is one half of the label -- two <i>names</i> are connected using an arrow.
-    ///
-    QList<QPair<QString, QString>> m_namePairs;
+		///
+		/// \brief The number of labels taken into account.
+		///
+		int m_labelCount;
 
-    ///
-    /// \brief The number of labels taken into account.
-    ///
-    int m_labelCount;
+		///
+		/// \brief Character count of the longest name in all labels.
+		///
+		int m_maxNameLength;
 
-    ///
-    /// \brief Character count of the longest name in all labels.
-    ///
-    int m_maxNameLength;
+	private: // static members
 
-private: // static members
+		///
+		/// \brief Character denoting the flow direction in an EdgeLabel.
+		///
+		/// Should be something like: <code>" -> "</code> (including spaces) to produce: <code>foo.a -> bar.b</code>.
+		///
+		static const QString s_arrowChar;
 
-    ///
-    /// \brief Character denoting the flow direction in an EdgeLabel.
-    ///
-    /// Should be something like: <code>" -> "</code> (including spaces) to produce: <code>foo.a -> bar.b</code>.
-    ///
-    static const QString s_arrowChar;
+		///
+		/// \brief Character denoting the scope of a Plug in an EdgeLabel.
+		///
+		/// Should be something like: <code>"."</code> to produce: <code>foo.a -> bar.b</code>.
+		///
+		static const QString s_dotChar;
 
-    ///
-    /// \brief Character denoting the scope of a Plug in an EdgeLabel.
-    ///
-    /// Should be something like: <code>"."</code> to produce: <code>foo.a -> bar.b</code>.
-    ///
-    static const QString s_dotChar;
+		///
+		/// \brief Character for whitespace fill in an EdgeLabel.
+		///
+		/// If found a simple space works without problems.
+		///
+		static const QString s_whitespaceChar;
 
-    ///
-    /// \brief Character for whitespace fill in an EdgeLabel.
-    ///
-    /// If found a simple space works without problems.
-    ///
-    static const QString s_whitespaceChar;
+		///
+		/// \brief Character for a linebreak in an EdgeLabel.
+		///
+		static const QString s_newlineChar;
 
-    ///
-    /// \brief Character for a linebreak in an EdgeLabel.
-    ///
-    static const QString s_newlineChar;
+		///
+		/// \brief Character for an (somewhat) uninterrupted horizontal line.
+		///
+		static const QString s_horizontalLineChar;
 
-    ///
-    /// \brief Character for an (somewhat) uninterrupted horizontal line.
-    ///
-    static const QString s_horizontalLineChar;
-
-};
+	};
 
 } // namespace zodiac
 

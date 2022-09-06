@@ -32,9 +32,12 @@
 /// \brief Contains the definition of the zodiac::EdgeGroupInterface mixin class.
 ///
 
+#include <QtGlobal>
+
 class QString;
 
-namespace zodiac {
+namespace zodiac
+{
 
 ///
 /// \brief Mix-in interface for EdgeGroup and EdgeGroupPair.
@@ -43,19 +46,19 @@ namespace zodiac {
 /// Now, a StraightEdge can always ask its EdgeGroupInterface for a label text, even if the StraightEdge is really a
 /// StraightDoubleEdge.
 ///
-class EdgeGroupInterface
-{
+	class Q_DECL_EXPORT EdgeGroupInterface
+	{
 
-public: // method
+	public: // method
 
-    ///
-    /// \brief  Generates a text used for a group of edges.
-    ///
-    /// \return Text used for the EdgeLabel.
-    ///
-    virtual QString getLabelText() = 0;
+		///
+		/// \brief  Generates a text used for a group of edges.
+		///
+		/// \return Text used for the EdgeLabel.
+		///
+		virtual QString getLabelText() = 0;
 
-};
+	};
 
 } // namespace zodiac
 

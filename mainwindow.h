@@ -35,7 +35,9 @@
 #include <QMainWindow>
 
 class MainCtrl;
+
 class PropertyEditor;
+
 class QSplitter;
 
 ///
@@ -45,61 +47,61 @@ class QSplitter;
 ///
 class MainWindow : public QMainWindow
 {
-    Q_OBJECT
+Q_OBJECT
 
 public: // methods
 
-    ///
-    /// \brief Constructor.
-    ///
-    /// \param parent   Qt parent.
-    ///
-    MainWindow(QWidget *parent=0);
+	///
+	/// \brief Constructor.
+	///
+	/// \param parent   Qt parent.
+	///
+	MainWindow(QWidget *parent = 0);
 
 protected: // methods
 
-    ///
-    /// \brief Called upon closing.
-    ///
-    /// \param event    Qt event.
-    ///
-    void closeEvent(QCloseEvent* event);
+	///
+	/// \brief Called upon closing.
+	///
+	/// \param event    Qt event.
+	///
+	void closeEvent(QCloseEvent *event);
 
 private slots:
 
-    ///
-    /// \brief Displays the About-window of the application.
-    ///
-    void displayAbout();
+	///
+	/// \brief Displays the About-window of the application.
+	///
+	void displayAbout();
 
 private: // methods
 
-    ///
-    /// \brief Reads GUI settings stored by QSettings.
-    ///
-    /// In Ubuntu the location of the settings file is:  ~/.config/clemens-sielaff/ZodiacGraph_ExampleApp.ini
-    /// In Windows the location of the sittings file is: %APPDATA%\Roaming\clemens-sielaff\ZodiacGraph_ExampleApp.ini
-    ///
-    void readSettings();
+	///
+	/// \brief Reads GUI settings stored by QSettings.
+	///
+	/// In Ubuntu the location of the settings file is:  ~/.config/clemens-sielaff/ZodiacGraph_ExampleApp.ini
+	/// In Windows the location of the sittings file is: %APPDATA%\Roaming\clemens-sielaff\ZodiacGraph_ExampleApp.ini
+	///
+	void readSettings();
 
-    ///
-    /// \brief Writes out GUI settings for the next instance of the application to read.
-    ///
-    /// For details, see readSettings().
-    ///
-    void writeSettings();
+	///
+	/// \brief Writes out GUI settings for the next instance of the application to read.
+	///
+	/// For details, see readSettings().
+	///
+	void writeSettings();
 
 private: // members
 
-    ///
-    /// \brief Main controller used for controlling the nodes (both visual and logical) of the graph.
-    ///
-    MainCtrl* m_mainCtrl;
+	///
+	/// \brief Main controller used for controlling the nodes (both visual and logical) of the graph.
+	///
+	MainCtrl *m_mainCtrl;
 
-    ///
-    /// \brief Main splitter between the Zodiac Graph and the Property editor.
-    ///
-    QSplitter* m_mainSplitter;
+	///
+	/// \brief Main splitter between the Zodiac Graph and the Property editor.
+	///
+	QSplitter *m_mainSplitter;
 
 };
 
