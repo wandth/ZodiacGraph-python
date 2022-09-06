@@ -43,7 +43,6 @@ namespace zodiac
 
 	class BaseEdge;
 
-	enum class ArrowKind;
 ///
 /// \brief The EdgeArrow is an additional item of the BaseEdge, identifying its direction.
 ///
