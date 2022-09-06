@@ -24,7 +24,6 @@
 //
 #ifndef COLLAPSIBLE_H
 #define COLLAPSIBLE_H
-s
 #include <QFrame>
 
 class QPushButton;
