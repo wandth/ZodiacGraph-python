@@ -35,26 +35,15 @@
 #include <QGraphicsObject>
 #include <QtGlobal>
 
+#include "utils.h"
+
 namespace zodiac
 {
-
 	class EdgeLabel;
 
 	class BaseEdge;
 
-///
-/// \brief There are currently 2 visually different types of EdgeArrow%s used in the graph.
-///
-/// Even though they are drawn differently, both are functionally the same.
-/// The only difference is the original arrow shape they use for generating their own. <br>
-/// This enum is a numeration of these original arrow shapes.
-///
-	enum class ArrowKind
-	{
-		SINGLE = 0, ///< A single triangle pointing into the direction of the edge.
-		DOUBLE = 1, ///< Two mirrored triangles, pointing along different directions of the edge.
-	};
-
+	enum class ArrowKind;
 ///
 /// \brief The EdgeArrow is an additional item of the BaseEdge, identifying its direction.
 ///

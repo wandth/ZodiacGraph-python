@@ -35,6 +35,7 @@
 #include <QSet>
 #include <QVector2D>
 #include <QtGlobal>
+#include "utils.h"
 
 namespace zodiac
 {
@@ -49,16 +50,6 @@ namespace zodiac
 
 	class PlugLabel;
 
-///
-/// \brief The direction in which a Plug leads in relation to its Node.
-///
-	enum class PlugDirection
-	{
-		IN = 0, ///< INcoming Plug%s only accept incoming PlugEdge%s.
-		OUT = 1, ///< OUTcoming Plug%s only accept outoing PlugEdge%s.
-		BOTH = 2, ///< Plug%s cannot work in BOTH directions, but BOTH can be used as an argument.
-	};
-
 
 ///
 /// \brief A single Plug of a Node.
@@ -68,8 +59,7 @@ namespace zodiac
 ///
 	class Q_DECL_EXPORT Plug : public QGraphicsObject
 	{
-
-	Q_OBJECT
+		Q_OBJECT
 
 		///
 		/// \brief Since Plug%s are managed by Node%s, the Node class has access to otherwise private interface members.
@@ -432,7 +422,7 @@ namespace zodiac
 		///
 		/// \param [in] event   Qt event object.
 		///
-		void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+		void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 
 		///
 		/// \brief Called if the mouse is released after a click on this item.

@@ -37,13 +37,14 @@
 
 namespace zodiac
 {
+	Q_NAMESPACE
 
-///
-/// \brief Z-Positions of items in the node view.
-///
-/// Is not an enum class, because this enum is often used with QGraphicItem's setZValue(), which requires an integer.
-/// And using a pure enum is easier.
-///
+	///
+	/// \brief Z-Positions of items in the node view.
+	///
+	/// Is not an enum class, because this enum is often used with QGraphicItem's setZValue(), which requires an integer.
+	/// And using a pure enum is easier.
+	///
 	enum zStack
 	{
 		EDGE = -10,  ///< Edges are all the way in the background.
@@ -53,8 +54,52 @@ namespace zodiac
 		EDGE_LABEL = 30,   ///< EdgeLabel%s overlay all Node%s.
 		DRAW_EDGE = 40    ///< The DrawEdge is drawn in front of overthing.
 	};
+	Q_ENUM_NS(zStack)
+
+	///
+	/// \enum NodeExpansion
+	///
+	/// Describes, whether the incoming or the outgoing Plug%s of a Node are displayed -- or both or none.
+	///
+	/// Note that the state change is immediate, so a Node might be in a NodeExpansion::NONE state, while its Plug%s are
+	/// still displaying the collapse-animation.
+	///
+	enum class NodeExpansion
+	{
+		NONE = 0, ///< No expansion.
+		IN = 1, ///< Incoming Plug%s are expanded.
+		OUT = 2, ///< Outgoing Plug%s are expanded.
+		BOTH = 3  ///< Both types of Plug are expanded.
+	};
+	Q_ENUM_NS(NodeExpansion)
+
+	///
+	/// \brief There are currently 2 visually different types of EdgeArrow%s used in the graph.
+	///
+	/// Even though they are drawn differently, both are functionally the same.
+	/// The only difference is the original arrow shape they use for generating their own. <br>
+	/// This enum is a numeration of these original arrow shapes.
+	///
+	enum class ArrowKind
+	{
+		SINGLE = 0, ///< A single triangle pointing into the direction of the edge.
+		DOUBLE = 1, ///< Two mirrored triangles, pointing along different directions of the edge.
+	};
+	Q_ENUM_NS(ArrowKind)
+
+	///
+	/// \brief The direction in which a Plug leads in relation to its Node.
+	///
+	enum class PlugDirection
+	{
+		IN = 0, ///< INcoming Plug%s only accept incoming PlugEdge%s.
+		OUT = 1, ///< OUTcoming Plug%s only accept outoing PlugEdge%s.
+		BOTH = 2, ///< Plug%s cannot work in BOTH directions, but BOTH can be used as an argument.
+	};
+	Q_ENUM_NS(PlugDirection)
 
 } // namespace zodiac
+
 
 ///
 /// \brief Constructs a quadrat with a given side length.

@@ -30,12 +30,14 @@
 ///
 /// \brief Contains the definition of the zodiac::Node class and zodiac::NodeExpansion enum.
 ///
-
 #include <QGraphicsObject>
 #include <QPropertyAnimation>
 #include <QSet>
 #include <QUuid>
 #include <QtGlobal>
+#include <QMetaType>
+
+#include "utils.h"
 
 namespace zodiac
 {
@@ -50,23 +52,8 @@ namespace zodiac
 
 	class Scene;
 
-	enum class PlugDirection;
 
-///
-/// \enum NodeExpansion
-///
-/// Describes, whether the incoming or the outgoing Plug%s of a Node are displayed -- or both or none.
-///
-/// Note that the state change is immediate, so a Node might be in a NodeExpansion::NONE state, while its Plug%s are
-/// still displaying the collapse-animation.
-///
-	enum class NodeExpansion
-	{
-		NONE = 0, ///< No expansion.
-		IN = 1, ///< Incoming Plug%s are expanded.
-		OUT = 2, ///< Outgoing Plug%s are expanded.
-		BOTH = 3  ///< Both types of Plug are expanded.
-	};
+
 
 ///
 /// \brief A Node in the Zodiac Graph.
